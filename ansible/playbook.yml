@@ -1,0 +1,8 @@
+---
+- name: install aws-cli , kubectl , docker , jenkins
+  hosts: server
+  roles:
+    - aws-cli
+    - kubectl
+    - docker
+    - jenkins

@@ -1,0 +1,59 @@
+- name: update apt 
+  apt: 
+    update_cache: yes
+- name: install required packages
+  apt: 
+    name:
+     - apt-transport-https
+     - ca-certificates
+     - wget
+- name: change permissions
+  file:
+    path: /usr/share/keyrings/ 
+    mode: '0755'
+    state: directory
+- name: download jenkins
+  shell: wget https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key -O /usr/share/keyrings/jenkins-keyring.asc
+  args:
+    executable: /bin/bash
+- name: change permissions 
+  file:
+    path: /usr/share/keyrings/jenkins-keyring.asc
+    mode: a+r
+    state: file
+
+- name: task6
+  lineinfile:
+    path: /etc/apt/sources.list.d/jenkins.list
+    line: deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/
+    create: yes
+
+
+- name: apt update
+  apt: 
+    update_cache: yes
+- name: install jdk , jenkins
+  apt:
+    name:
+     - openjdk-11-jdk
+     - jenkins
+- name: Add user to docker group
+  user:
+    name: jenkins
+    groups: docker
+    append: yes  
+
+- name: Start Jenkins 
+  become: true
+  service:
+    name: jenkins
+    state: started
+
+- name: Retrieve Jenkins admin password
+  command: "cat /var/lib/jenkins/secrets/initialAdminPassword"
+  register: admin_password
+  changed_when: false
+
+- name: Print EKS Cluster status
+  debug:
+    var: admin_password.stdout

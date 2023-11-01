@@ -1,0 +1,53 @@
+- name: update apt 
+  apt: 
+    update_cache: yes
+- name: install required packages
+  apt: 
+    name:
+     - ca-certificates
+     - curl
+     - gnupg
+- name: change permissions
+  file:
+    path: /etc/apt/keyrings
+    mode: '0755'
+    state: directory
+- name: download docker
+  shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  args:
+    executable: /bin/bash
+- name: change permissions
+  file:
+    path: /etc/apt/keyrings/docker.gpg
+    mode: a+r
+    state: file
+- name: download docker
+  shell: >
+    echo
+    "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu
+    "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" |
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+- name: update apt
+  apt: 
+    update_cache: yes
+- name: install docker
+  apt:
+    name:
+     - docker-ce
+     - docker-ce-cli  
+     - containerd.io
+     - docker-buildx-plugin
+     - docker-compose-plugin
+    state: present
+
+- name: Add user to docker group
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+
+- name: Change permissions 
+  file:
+    path: /var/run/docker.sock
+    mode: "0666"
+  notify: restart docker

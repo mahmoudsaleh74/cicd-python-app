@@ -1,0 +1,41 @@
+- name: update apt 
+  apt: 
+    update_cache: yes
+- name: install required packages
+  apt: 
+    name:
+     - apt-transport-https
+     - ca-certificates
+     - curl
+- name: change permissions
+  file:
+    path: /etc/apt/keyrings/ 
+    mode: '0755'
+    state: directory
+- name: task4
+  shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  args:
+    executable: /bin/bash
+- name: change permissions
+  file:
+    path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    mode: a+r
+    state: file
+
+- name: task6
+  lineinfile:
+    path: /etc/apt/sources.list.d/kubernetes.list
+    line: deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /
+    create: yes
+
+- name: update apt
+  apt: 
+    update_cache: yes
+- name: install kubectl
+  apt:
+    name:
+     - kubectl
+    state: present
+- name: Update kubeconfig
+  shell: aws eks --region us-east-1 update-kubeconfig --name my-cluster
+
