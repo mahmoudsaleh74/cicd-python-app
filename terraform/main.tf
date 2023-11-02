@@ -60,7 +60,7 @@ module "ec2" {
   source = "./modules/ec2"
   depends_on= [module.eks]
   key_pair_name="kamen"
-  instance_type="t2.micro"
+  instance_type="t2.medium"
   availability_zone="us-east-1a"
   subnet_id=module.public_subnets.subnet_ids[0]
   sg=module.sg.sg_id
