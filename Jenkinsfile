@@ -56,6 +56,8 @@ pipeline{
                 def serviceName = 'app'
                 def url = sh(script: "kubectl get svc ${serviceName} -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'", returnStdout: true).trim()
                 echo "Website URL: http://${url}"
+                echo " wait for 1 minute then connect...  "
+
             }
         }
         failure {

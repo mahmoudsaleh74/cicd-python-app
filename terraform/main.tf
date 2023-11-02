@@ -65,7 +65,7 @@ module "ec2" {
   subnet_id=module.public_subnets.subnet_ids[0]
   sg=module.sg.sg_id
   volume_size="8"
-  instance_name="my instance"
+  instance_name="jenkins instance"
   eks_profile_name=module.eks.eks_profile_name
 }
 
