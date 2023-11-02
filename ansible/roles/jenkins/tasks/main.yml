@@ -37,6 +37,7 @@
     name:
      - openjdk-11-jdk
      - jenkins
+  ignore_errors: true
 - name: Add user to docker group
   user:
     name: jenkins
