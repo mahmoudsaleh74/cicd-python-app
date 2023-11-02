@@ -26,7 +26,7 @@ update_inventory() {
 
     # Replace the IP address of the target host in the inventory file
     echo "[server]" > "${inventory_file}"
-    echo "server ansible_host=${instance_ip} ansible_ssh_private_key_file=${ssh_key}" > "${inventory_file}"
+    echo "server ansible_host=${instance_ip} ansible_ssh_private_key_file=${ssh_key}" >> "${inventory_file}"
     echo "Ansible inventory updated."
 }
 
