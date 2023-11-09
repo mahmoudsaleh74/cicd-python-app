@@ -90,7 +90,7 @@ run script:
 ### 2. configure jenkins ###
 
 ### 2.1 access jenkins
-2.1.1 open:
+- 2.1.1 open:
 ```bash
 <ec2-ip>:8080
 ```
