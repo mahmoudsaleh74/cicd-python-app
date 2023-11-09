@@ -33,9 +33,9 @@ The project is divided into distinct phases, each catering to a specific facet o
 ## Step-by-Step Walkthrough
 
 ### 0. Prerequisites ###
-github account
-aws account with aws access keys and aws key pairs
-ubuntu machine with ansible and terraform 
+- github account
+- aws account with aws access keys and aws key pairs
+- ubuntu machine with ansible and terraform 
 
 ### 1. Automate Infrastructure and Dependencies ###
 
@@ -50,12 +50,12 @@ cd cicd-python-app
 ```
 ### 1.1 terraform Dependencies
 
-edit terraform main file (line 62 ) with your aws key pair name ( required to ssh into ec2 ) :
+edit terraform main file (line 62 ) with your aws key pair name ( required to provisin ec2 ) :
 ```bash
 vim terraform/main.tf
 ```
 
-Configure Your Access-Secret key And Key Pair Name as terraform profile with profile name "myprofile":
+Configure Your Access-Secret key as terraform profile with profile name "myprofile":
 ```bash
 aws configure
 ```
@@ -70,7 +70,7 @@ edit script.sh (line 7) with aws key pair name( required for ansible to access e
 vim script.sh
 ```
 
-Put Your Aws Access - Secret Key - Key Pair Name in file ( required to configure aws-cli on ec2):
+Put Your Aws Access - Secret Key in file ( required to configure aws-cli on ec2):
 ```bash
 vim ansible/roles/aws-cli/vars/main.yml
 ```
@@ -94,26 +94,26 @@ run script:
 ```bash
 <ec2-ip>:8080
 ```
-2.1.2 put admin password from script output
-2.1.3 Install Plugins: Click "Install suggested plugins" and wait for the installation to finish.
-2.1.4 Create User: Create a user with necessary information.
-2.1.5 Start Jenkins: Click "Start Jenkins".
+- 2.1.2 put admin password from script output
+- 2.1.3 Install Plugins: Click "Install suggested plugins" and wait for the installation to finish.
+- 2.1.4 Create User: Create a user with necessary information.
+- 2.1.5 Start Jenkins: Click "Start Jenkins".
 
 ### 2.2 Add GitHub and AWS Keys 
 
 2.2.1 dockerhub Key:
 
-Go to Manage Jenkins > Credentials > System > Global credentials (unrestricted) > Add credentials.
+- Go to Manage Jenkins > Credentials > System > Global credentials (unrestricted) > Add credentials.
 Use Username with password, scope Global.
-Provide your dockerhub username in username field and token in password field.
-ID: docker-hub
+- Provide your dockerhub username in username field and token in password field.
+- ID: docker-hub
 
-2.2.1AWS Key:
-install plugin "pipeline: aws steps"
-Go to Manage Jenkins > Credentials > System > Global credentials (unrestricted) > Add credentials.
+2.2.1 AWS Key:
+- install plugin "pipeline: aws steps"
+- Go to Manage Jenkins > Credentials > System > Global credentials (unrestricted) > Add credentials.
 Use aws credentials, scope Global.
-Provide your AWS Access Key id and Secret Key
-ID: aws-cli
+- Provide your AWS Access Key id and Secret Key
+- ID: aws-cli
 
 
 ### 3. configure jenkins pipeline ###
@@ -122,29 +122,29 @@ ID: aws-cli
 ### 3.1 configure webhook for github
 
 3.1.1 Create a Webhook:
-Go to your GitHub repository.
-Click on "Settings" tab.
-Click on "Webhooks" in the left sidebar.
-Click the "Add webhook" button.
+- Go to your GitHub repository.
+- Click on "Settings" tab.
+- Click on "Webhooks" in the left sidebar.
+- Click the "Add webhook" button.
 
 3.1.2 configure Webhook:
-Payload URL: This is the URL of your Jenkins server's webhook endpoint. It usually looks like http://ip_server:8080/github-webhook/.
-Content type: Set it to application/json.
-Which events would you like to trigger this webhook?: Choose the events that should trigger the Jenkins build. Typically, you might select "Push events" for any code pushes to the repository.
-Click the "Add webhook" button to save your webhook configuration.
+- Payload URL: This is the URL of your Jenkins server's webhook endpoint. It usually looks like http://ip_server:8080/github-webhook/.
+- Content type: Set it to application/json.
+- Which events would you like to trigger this webhook?: Choose the events that should trigger the Jenkins build. Typically, you might select "Push events" for any code pushes to the repository.
+- Click the "Add webhook" button to save your webhook configuration.
 
 ### 3.2 configure jenkins job 
-In Jenkins Page Click Create Job
-In Enter an item name Field Put Any Name For Pipeline
-Choose Pipeline
-build triggers : choose github hook trigger from gitscm polling
-pipeline: pipeline script from scm >> scm: git >> put your repo url >> branch: */master
+- In Jenkins Page Click Create Job
+- In Enter an item name Field Put Any Name For Pipeline
+- Choose Pipeline
+- build triggers : choose github hook trigger from gitscm polling
+- pipeline: pipeline script from scm >> scm: git >> put your repo url >> branch: */master >>
 scipt path: Jenkinsfile
 
 ### 4. test project ###
-run jenkins job
-navigate to job console 
-copy website url and open it in the browser  
+- run jenkins job
+- navigate to job console 
+- copy website url and open it in the browser  
 
 
 ## In Conclusion
